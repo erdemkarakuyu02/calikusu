@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çalıkuşu Kafe | Butik Menü</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --dark-olive: #2c3627;
+            --muted-gold: #b9935a;
+            --paper-white: #fcfbf8;
+            --text-main: #1a1a1a;
+            --text-soft: #666666;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--paper-white);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .view {
+            display: none;
+            animation: fadeUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            padding: 50px 20px 30px;
+            text-align: center;
+        }
+
+        .hero-icon {
+            font-size: 1.8rem;
+            color: var(--muted-gold);
+            margin-bottom: 15px;
+        }
+
+        .cafe-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark-olive);
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .cafe-tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--text-soft);
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            width: 50px;
+            height: 2px;
+            background-color: var(--muted-gold);
+            margin: 20px auto 40px;
+            border-radius: 2px;
+        }
+
+        .categories-container {
+            max-width: 600px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .category-arch {
+            background: #ffffff;
+            border: 1px solid rgba(185, 147, 90, 0.2);
+            border-radius: 90px 90px 15px 15px;
+            padding: 45px 15px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-height: 170px;
+        }
+
+        .category-arch:hover, .category-arch:active {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(44, 54, 39, 0.08);
+            border-color: var(--muted-gold);
+        }
+
+        .category-icon {
+            font-size: 2.2rem;
+            color: var(--dark-olive);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .category-arch:hover .category-icon {
+            color: var(--muted-gold);
+            transform: scale(1.1);
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--dark-olive);
+            letter-spacing: 0.5px;
+        }
+
+        .detail-header {
+            padding: 30px 20px 20px;
+            text-align: center;
+            position: relative;
+            background-color: var(--paper-white);
+            border-bottom: 1px solid rgba(185, 147, 90, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--dark-olive);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            color: var(--muted-gold);
+        }
+
+        .detail-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--dark-olive);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .back-btn span { display: none; }
+            .detail-title { font-size: 1.4rem; }
+        }
+
+        .menu-list-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 25px;
+        }
+
+        .menu-item {
+            padding: 20px 0;
+            border-bottom: 1px dashed rgba(185, 147, 90, 0.4);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--dark-olive);
+            padding-right: 15px;
+        }
+
+        .item-price {
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--muted-gold);
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-soft);
+            font-size: 0.85rem;
+        }
+
+        .social-icons {
+            margin: 15px 0;
+        }
+        
+        .social-icons a {
+            text-decoration: none;
+            color: var(--dark-olive);
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            color: var(--muted-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <main id="home-view" class="view active">
+        <header class="hero">
+            <i class="fa-solid fa-dove hero-icon"></i>
+            <h1 class="cafe-name">ÇALIKUŞU</h1>
+            <p class="cafe-tagline">Butik Kafe & Geleneksel Lezzetler</p>
+            <div class="divider"></div>
+        </header>
+
+        <div class="categories-container">
+            <div class="category-grid">
+                <div class="category-arch" onclick="openCategory('sicak')">
+                    <i class="fa-solid fa-mug-hot category-icon"></i>
+                    <span class="category-title">Sıcak İçecekler</span>
+                </div>
+
+                <div class="category-arch" onclick="openCategory('soguk')">
+                    <i class="fa-solid fa-glass-water-droplet category-icon"></i>
+                    <span class="category-title">Soğuk İçecekler</span>
+                </div>
+
+                <div class="category-arch" onclick="openCategory('geleneksel')">
+                    <i class="fa-solid fa-mug-saucer category-icon"></i>
+                    <span class="category-title">Geleneksel</span>
+                </div>
+
+                <div class="category-arch" onclick="openCategory('atistirmalik')">
+                    <i class="fa-solid fa-utensils category-icon"></i>
+                    <span class="category-title">Atıştırmalık</span>
+                </div>
+
+                <div class="category-arch" onclick="openCategory('tatli')">
+                    <i class="fa-solid fa-cookie-bite category-icon"></i>
+                    <span class="category-title">Tatlılar</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/calikusucafee/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <p>© 2026 Çalıkuşu Kafe. Tüm hakları saklıdır.</p>
+        </footer>
+    </main>
+
+    <main id="detail-view" class="view">
+        <header class="detail-header">
+            <button class="back-btn" onclick="goHome()">
+                <i class="fa-solid fa-arrow-left-long"></i> <span>Menüye Dön</span>
+            </button>
+            <h2 id="category-page-title" class="detail-title">Kategori</h2>
+        </header>
+
+        <div class="menu-list-container" id="menu-items-container">
+        </div>
+    </main>
+
+    <script>
+        const menuData = {
+            'sicak': {
+                title: "Sıcak İçecekler",
+                items: [
+                    { name: "Çalıkuşu Harmanı", desc: "Taze demlenmiş, ince belli bardakta Rize çayı.", price: "1 ₺" },
+                    { name: "Filtre Kahve", desc: "Kolombiya çekirdeklerinden taze demlenmiş.", price: "1 ₺" },
+                    { name: "Caffe Latte", desc: "Bol sütlü ve yumuşak içimli espresso.", price: "1 ₺" },
+                    { name: "Sıcak Çikolata", desc: "Yoğun Belçika çikolatası ile hazırlanır.", price: "1 ₺" },
+                    { name: "Kış Çayı", desc: "Ihlamur, zencefil, tarçın ve taze limon dilimleri.", price: "1 ₺" }
+                ]
+            },
+            'soguk': {
+                title: "Soğuk İçecekler",
+                items: [
+                    { name: "Ev Yapımı Limonata", desc: "Taze nane ve limon kabuğu rendesi ile.", price: "1 ₺" },
+                    { name: "Iced Latte", desc: "Buz gibi süt ve özenli espresso şatı.", price: "1 ₺" },
+                    { name: "Churchill", desc: "Soda, tuz ve taze sıkım limon suyu.", price: "1 ₺" },
+                    { name: "Reyhan Şerbeti", desc: "Geleneksel usulle hazırlanmış serinletici lezzet.", price: "1 ₺" },
+                    { name: "Buzlu Çay", desc: "Şeftali veya limon seçenekleriyle.", price: "1 ₺" }
+                ]
+            },
+            'geleneksel': {
+                title: "Geleneksel Lezzetler",
+                items: [
+                    { name: "Közde Türk Kahvesi", desc: "Lokum ve su eşliğinde ağır ateşte pişirilmiş.", price: "1 ₺" },
+                    { name: "Damla Sakızlı Kahve", desc: "Ege'den gelen ferah damla sakızı aromasıyla.", price: "1 ₺" },
+                    { name: "Menengiç Kahvesi", desc: "Sütle hazırlanan yöresel ve kafeinsiz lezzet.", price: "1 ₺" },
+                    { name: "Hakiki Salep", desc: "Üzeri bol tarçınlı, kış aylarının vazgeçilmezi.", price: "1 ₺" }
+                ]
+            },
+            'atistirmalik': {
+                title: "Atıştırmalıklar",
+                items: [
+                    { name: "Sigara Böreği", desc: "Taze çıtır yufka ve peynirli iç harç (6 Adet).", price: "1 ₺" },
+                    { name: "Patates Kızartması", desc: "Baharatlı veya sade, özel dip sos ile.", price: "1 ₺" },
+                    { name: "Soğan Halkası", desc: "Çıtır kaplamalı altın sarısı soğan halkaları.", price: "1 ₺" },
+                    { name: "Çıtır Tavuk Sepeti", desc: "Özel soslu tavuk parçaları ve patates kızartması.", price: "1 ₺" }
+                ]
+            },
+            'tatli': {
+                title: "Tatlılar",
+                items: [
+                    { name: "Fırın Sütlaç", desc: "Üzeri nar gibi kızarmış, bol fındıklı tatlı.", price: "1 ₺" },
+                    { name: "Mozaik Pasta", desc: "Anne usulü, cevizli ve yoğun çikolatalı.", price: "1 ₺" },
+                    { name: "Islak Kek", desc: "Bol çikolata soslu, taze ve yumuşacık.", price: "1 ₺" },
+                    { name: "San Sebastian", desc: "Akışkan peynir tatlısı, karamel veya çikolata sosuyla.", price: "1 ₺" }
+                ]
+            }
+        };
+
+        const homeView = document.getElementById('home-view');
+        const detailView = document.getElementById('detail-view');
+        const categoryPageTitle = document.getElementById('category-page-title');
+        const menuItemsContainer = document.getElementById('menu-items-container');
+
+        function openCategory(categoryKey) {
+            const data = menuData[categoryKey];
+            
+            categoryPageTitle.textContent = data.title;
+            menuItemsContainer.innerHTML = '';
+
+            data.items.forEach(item => {
+                const itemHTML = `
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${item.price}</div>
+                        </div>
+                        <div class="item-desc">${item.desc}</div>
+                    </div>
+                `;
+                menuItemsContainer.innerHTML += itemHTML;
+            });
+
+            homeView.classList.remove('active');
+            window.scrollTo(0,0);
+            detailView.classList.add('active');
+
+            history.pushState({ categoryOpen: true }, '', '#' + categoryKey);
+        }
+
+        window.addEventListener('popstate', function() {
+            detailView.classList.remove('active');
+            window.scrollTo(0,0);
+            homeView.classList.add('active');
+        });
+
+        function goHome() {
+            if (history.state && history.state.categoryOpen) {
+                history.back();
+            } else {
+                detailView.classList.remove('active');
+                window.scrollTo(0,0);
+                homeView.classList.add('active');
+                history.replaceState(null, '', window.location.pathname);
+            }
+        }
+    </script>
+
+</body>
+</html>
